@@ -19,6 +19,12 @@ class LexicalAnalyzer:
     _MULASSIGN = 15 # *=
     _MOD = 16  # %
     _MODASSIGN = 17  # %=
+    _GREQ = 18  # >=
+    _GRTH = 19  # >
+    _LSTH = 20  # <
+    _LSEQ = 21  # <=
+    _NEQ = 22  # !=
+    _NOT = 23  # !
     input_code = ""
     iterator = -1
 
@@ -101,6 +107,31 @@ class LexicalAnalyzer:
             else:
                 self.iterator -= 1
                 return self._MOD
+        if c == '>':
+            self.iterator += 1
+            c = self.get_char_at_iterator()
+            if c == '=':
+                return self._GREQ
+            else:
+                self.iterator -= 1
+                return self._GRTH
+        if c == '<':
+            self.iterator += 1
+            c = self.get_char_at_iterator()
+            if c == '=':
+                return self._LSEQ
+            else:
+                self.iterator -= 1
+                return self._LSTH
+        if c == '!':
+            self.iterator += 1
+            c = self.get_char_at_iterator()
+            if c == '=':
+                return self._NEQ
+            else:
+                self.iterator -= 1
+                return self._NOT
+
 
     def scan(self):
         rez = self.next_lex()
