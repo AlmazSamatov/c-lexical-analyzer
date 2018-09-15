@@ -1,5 +1,5 @@
-from lexical_analyzer import Lexical_Analyzer
+from lexical_analyzer import LexicalAnalyzer
 
 f = open("in.c", "r")
-lexical_analyzer = Lexical_Analyzer(f.read())
+lexical_analyzer = LexicalAnalyzer(f.read())
 lexical_analyzer.scan()
