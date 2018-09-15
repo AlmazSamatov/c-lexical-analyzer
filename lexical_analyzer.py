@@ -17,6 +17,8 @@ class LexicalAnalyzer:
     _MASSIGN = 13  # -=
     _DIV = 14  # /
     _MULASSIGN = 15 # *=
+    _MOD = 16  # %
+    _MODASSIGN = 17  # %=
     input_code = ""
     iterator = -1
 
@@ -91,6 +93,14 @@ class LexicalAnalyzer:
             else:
                 self.iterator -= 1
                 return self._MIN
+        if c == '%':
+            self.iterator += 1
+            c = self.get_char_at_iterator()
+            if c == "=":
+                return self._MODASSIGN
+            else:
+                self.iterator -= 1
+                return self._MOD
 
     def scan(self):
         rez = self.next_lex()
