@@ -12,6 +12,11 @@ class LexicalAnalyzer:
     _PLUS = 9  # +
     _INC = 10  # ++
     _PASSIGN = 11  # +=
+    _MIN = 12  # -
+    _DEC = 13  # --
+    _MASSIGN = 13  # -=
+    _DIV = 14  # /
+    _MULASSIGN = 15 # *=
     input_code = ""
     iterator = -1
 
@@ -27,6 +32,9 @@ class LexicalAnalyzer:
     def next_lex(self):
         self.iterator += 1
         c = self.get_char_at_iterator()
+        while c == ' ':
+            self.iterator += 1
+            c = self.get_char_at_iterator()
         if c == ';':
             return self._SEMI
         if c is None:
@@ -35,12 +43,12 @@ class LexicalAnalyzer:
             while c.isdigit():
                 self.iterator += 1
                 c = self.get_char_at_iterator()
-            if c != ' ' and c != ";":
-                self.iterator -= 1
-                return self._ERROR
-            else:
+            if c == ' ' or c == ";":
                 self.iterator -= 1
                 return self._NUM
+            else:
+                self.iterator -= 1
+                return self._ERROR
         if c == '=':
             self.iterator += 1
             c = self.get_char_at_iterator()
@@ -54,7 +62,13 @@ class LexicalAnalyzer:
         if c == ')':
             return self._RP
         if c == '*':
-            return self._MUL
+            self.iterator += 1
+            c = self.get_char_at_iterator()
+            if c == '=':
+                return self._MULASSIGN
+            else:
+                self.iterator -= 1
+                return self._MUL
         if c == "&":
             return self._AND
         if c == '+':
@@ -64,7 +78,19 @@ class LexicalAnalyzer:
                 return self._INC
             elif c == '=':
                 return self._PASSIGN
-
+            else:
+                self.iterator -= 1
+                return self._PLUS
+        if c == '-':
+            self.iterator += 1
+            c = self.get_char_at_iterator()
+            if c == '-':
+                return self._DEC
+            elif c == '=':
+                return self._MASSIGN
+            else:
+                self.iterator -= 1
+                return self._MIN
 
     def scan(self):
         rez = self.next_lex()
