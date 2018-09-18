@@ -28,21 +28,22 @@ class LexicalAnalyzer:
             return None
         else:
             return self.input_code[self.iterator]
+        
+    def get_next(self):
+        self.iterator += 1
+        return self.get_char_at_iterator()
 
     def next_lex(self):
-        self.iterator += 1
-        c = self.get_char_at_iterator()
+        c = self.get_next()
         while c == ' ':
-            self.iterator += 1
-            c = self.get_char_at_iterator()
+            c = self.get_next()
         if c == ';':
             return self._SEMI
         if c is None:
             return self._EOF
         if c.isdigit():
             while c.isdigit():
-                self.iterator += 1
-                c = self.get_char_at_iterator()
+                c = self.get_next()
             if c == ' ' or c == ";":
                 self.iterator -= 1
                 return self._NUM
@@ -50,8 +51,7 @@ class LexicalAnalyzer:
                 self.iterator -= 1
                 return self._ERROR
         if c == '=':
-            self.iterator += 1
-            c = self.get_char_at_iterator()
+            c = self.get_next()
             if c == '=':
                 return self._EQUAL
             else:
@@ -62,8 +62,7 @@ class LexicalAnalyzer:
         if c == ')':
             return self._RP
         if c == '*':
-            self.iterator += 1
-            c = self.get_char_at_iterator()
+            c = self.get_next()
             if c == '=':
                 return self._MULASSIGN
             else:
@@ -72,8 +71,7 @@ class LexicalAnalyzer:
         if c == "&":
             return self._AND
         if c == '+':
-            self.iterator += 1
-            c = self.get_char_at_iterator()
+            c = self.get_next()
             if c == '+':
                 return self._INC
             elif c == '=':
@@ -82,8 +80,7 @@ class LexicalAnalyzer:
                 self.iterator -= 1
                 return self._PLUS
         if c == '-':
-            self.iterator += 1
-            c = self.get_char_at_iterator()
+            c = self.get_next()
             if c == '-':
                 return self._DEC
             elif c == '=':
