@@ -6,7 +6,7 @@ class LexicalAnalyzer:
 
     def __init__(self, input_code):
         self.input_code = input_code
-
+        
     def get_char(self, i):
         return self.input_code[i]
 
