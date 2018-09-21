@@ -16,45 +16,23 @@ def scan(input_code):
     char_list = []
 
     while len(char_list) > 0 or current_index < len(input_code):
-        found_operator = False
+        operator_lexeme = ''
+        operator_length = 0
 
         if current_index + 2 < len(input_code) and is_operator(input_code[current_index: current_index + 3]):
             # if we have operators as <<= etc.
-
-            # initially put into the list our lexeme that ends in this index
-            if len(char_list) > 0:
-                current_lexeme = to_str(char_list)
-                tokens.append((current_lexeme, find_type_of_lexeme(current_lexeme)))
-                char_list.clear()
-
-            current_lexeme = input_code[current_index: current_index + 3]
-            tokens.append((current_lexeme, find_type(current_lexeme)))
-            current_index += 2
+            operator_lexeme = input_code[current_index: current_index + 3]
+            operator_length = 3
 
         elif current_index + 1 < len(input_code) and is_operator(input_code[current_index: current_index + 2]):
             # if we have operators as ++, --, -> etc.
+            operator_lexeme = input_code[current_index: current_index + 2]
+            operator_length = 2
 
-            # initially put into the list our lexeme that ends in this index
-            if len(char_list) > 0:
-                current_lexeme = to_str(char_list)
-                tokens.append((current_lexeme, find_type_of_lexeme(current_lexeme)))
-                char_list.clear()
-
-            current_lexeme = input_code[current_index: current_index + 2]
-            tokens.append((current_lexeme, find_type(current_lexeme)))
-            current_index += 1
-
-        elif is_operator(input_code[current_index]):
+        elif current_index < len(input_code) and is_operator(input_code[current_index]):
             # if we have operators as +, -, {, } etc.
-
-            # initially put into the list our lexeme that ends in this index
-            if len(char_list) > 0:
-                current_lexeme = to_str(char_list)
-                tokens.append((current_lexeme, find_type_of_lexeme(current_lexeme)))
-                char_list.clear()
-
-            current_lexeme = input_code[current_index]
-            tokens.append((current_lexeme, find_type(current_lexeme)))
+            operator_lexeme = input_code[current_index]
+            operator_length = 1
 
         elif current_index < len(input_code) and not is_delimiter(input_code[current_index]):
             char_list.append(input_code[current_index])
@@ -63,6 +41,17 @@ def scan(input_code):
             current_lexeme = to_str(char_list)
             tokens.append((current_lexeme, find_type_of_lexeme(current_lexeme)))
             char_list.clear()
+
+        # if we found operator then initially put into the list our lexeme that ends in this index and after put operator
+        if len(char_list) > 0 and len(operator_lexeme) > 0:
+            # put some lexeme before operator
+            current_lexeme = to_str(char_list)
+            tokens.append((current_lexeme, find_type_of_lexeme(current_lexeme)))
+            char_list.clear()
+
+            # put operator after lexeme
+            tokens.append((operator_lexeme, find_type_of_lexeme(operator_lexeme)))
+            current_index += operator_length - 1  # minus 1, because at the end we increment current index to 1
 
         current_index += 1
 
