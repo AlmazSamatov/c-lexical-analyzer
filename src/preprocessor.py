@@ -1,4 +1,4 @@
-from preprocessor_tool import PreprocessorTool
+from src.preprocessor_tool import PreprocessorTool
 
 
 #  Starting all preprocessing tools
@@ -7,6 +7,7 @@ def start(c_code):
     for key, value in replacing.items():
         c_code = replace_all(c_code, key, value)
     return c_code
+
 
 #  Scanning all '#define ' and return dictionary with format:
 #  what_to_replace: on_what_to_replace

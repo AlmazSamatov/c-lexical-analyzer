@@ -1,6 +1,6 @@
-from delimiters import _dictionary as delimiters
-from keywords import _dictionary as keywords
-from operators import _dictionary as operators
+from src.delimiters import _dictionary as delimiters
+from src.keywords import _dictionary as keywords
+from src.operators import _dictionary as operators
 
 
 def to_str(list):

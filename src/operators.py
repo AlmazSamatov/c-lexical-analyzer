@@ -33,6 +33,7 @@ _RSHIFTASSIGN = 33  # >>=
 _COMMA = 34  # ,
 _QUEST = 35  # ?
 _COLON = 36  # :
+_SELECT = 86  # ->
 
 # Dictionary that correlates lexeme with token
 _dictionary = {
@@ -70,5 +71,6 @@ _dictionary = {
     '>>=': _RSHIFTASSIGN,
     ',': _COMMA,
     '?': _QUEST,
-    ':': _COLON
+    ':': _COLON,
+    '->': _SELECT
 }

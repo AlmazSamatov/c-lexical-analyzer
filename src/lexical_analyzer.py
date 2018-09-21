@@ -1,10 +1,7 @@
-import keywords
-import delimiters
-import general_tokens
-import operators
-from util import to_str
-from util import find_type
-from util import delete_comments
+from src import delimiters, general_tokens, keywords, operators
+from src.util import to_str
+from src.util import find_type
+from src.util import delete_comments
 
 
 def scan(input_code):
@@ -81,24 +78,34 @@ def find_type_of_lexeme(lexeme):
 
 def is_operator(lexeme):
     # + - = / *
+    if not type(lexeme) is str:
+        return False
     return operators._dictionary.get(lexeme) != None
 
 
 def is_string(lexeme):
     # begins with " and ends with "
+    if not type(lexeme) is str:
+        return False
     return lexeme[0] == '"' and lexeme[len(lexeme) - 1] == '"'
 
 
 def is_char(lexeme):
     # begins with ' and ends with ' and length is 3
+    if not type(lexeme) is str:
+        return False
     return len(lexeme) == 3 and lexeme[0] == "'" and lexeme[2] == "'"
 
 
 def is_keyword(lexeme):
+    if not type(lexeme) is str:
+        return False
     return keywords._dictionary.get(lexeme) != None
 
 
 def is_identifier(lexeme):
+    if not type(lexeme) is str:
+        return False
     if lexeme[0] != '_' and not lexeme[0].isalpha():
         return False
     for char in lexeme:
@@ -109,10 +116,14 @@ def is_identifier(lexeme):
 
 def is_delimiter(lexeme):
     # , ; { } etc.
+    if not type(lexeme) is str:
+        return False
     return delimiters._dictionary.get(lexeme) != None
 
 
 def is_int(lexeme):
+    if not type(lexeme) is str:
+        return False
     first = True
     for char in lexeme:
         if not char.isdigit() or (char == '-' and not first):
@@ -122,6 +133,8 @@ def is_int(lexeme):
 
 
 def is_real_num(lexeme):
+    if not type(lexeme) is str:
+        return False
     first = True
     is_decimal = False
     for char in lexeme:
