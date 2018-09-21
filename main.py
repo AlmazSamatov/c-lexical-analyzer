@@ -1,4 +1,5 @@
 from lexical_analyzer import scan
+import preprocessor
 
 f = open("in.c", "r")
-print(scan(f.read()))
+print(preprocessor.start(f.read()))
