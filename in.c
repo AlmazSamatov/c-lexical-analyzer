@@ -2,7 +2,7 @@
 // asdbfajs,dfbasjdbfj
 // asdjfnaksjdfnk,
 
-23 * 234;
+int _abc = 23<<234;
 
 sdafasdf //a asjdnflasdjhfkjlasdfhkj
 // asdklfjaskdjfkj
