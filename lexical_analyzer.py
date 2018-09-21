@@ -16,36 +16,78 @@ def scan(input_code):
     char_list = []
 
     while len(char_list) > 0 or current_index < len(input_code):
+        found_operator = False
 
-        if current_index < len(input_code) and not is_delimiter(input_code[current_index]):
+        if current_index + 2 < len(input_code) and is_operator(input_code[current_index: current_index + 3]):
+            # if we have operators as <<= etc.
+
+            # initially put into the list our lexeme that ends in this index
+            if len(char_list) > 0:
+                current_lexeme = to_str(char_list)
+                tokens.append((current_lexeme, find_type_of_lexeme(current_lexeme)))
+                char_list.clear()
+
+            current_lexeme = input_code[current_index: current_index + 3]
+            tokens.append((current_lexeme, find_type(current_lexeme)))
+            current_index += 2
+
+        elif current_index + 1 < len(input_code) and is_operator(input_code[current_index: current_index + 2]):
+            # if we have operators as ++, --, -> etc.
+
+            # initially put into the list our lexeme that ends in this index
+            if len(char_list) > 0:
+                current_lexeme = to_str(char_list)
+                tokens.append((current_lexeme, find_type_of_lexeme(current_lexeme)))
+                char_list.clear()
+
+            current_lexeme = input_code[current_index: current_index + 2]
+            tokens.append((current_lexeme, find_type(current_lexeme)))
+            current_index += 1
+
+        elif is_operator(input_code[current_index]):
+            # if we have operators as +, -, {, } etc.
+
+            # initially put into the list our lexeme that ends in this index
+            if len(char_list) > 0:
+                current_lexeme = to_str(char_list)
+                tokens.append((current_lexeme, find_type_of_lexeme(current_lexeme)))
+                char_list.clear()
+
+            current_lexeme = input_code[current_index]
+            tokens.append((current_lexeme, find_type(current_lexeme)))
+
+        elif current_index < len(input_code) and not is_delimiter(input_code[current_index]):
             char_list.append(input_code[current_index])
+
         elif len(char_list) > 0:
             current_lexeme = to_str(char_list)
-            type_of_lexeme = int()
-
-            if is_operator(current_lexeme):
-                type_of_lexeme = find_type(current_lexeme)
-            elif is_keyword(current_lexeme):
-                type_of_lexeme = find_type(current_lexeme)
-            elif is_int(current_lexeme):
-                type_of_lexeme = general_tokens._NUM
-            elif is_real_num(current_lexeme):
-                type_of_lexeme = general_tokens._REAL
-            elif is_string(current_lexeme):
-                type_of_lexeme = general_tokens._STRING
-            elif is_char(current_lexeme):
-                type_of_lexeme = general_tokens._CHAR
-            elif is_identifier(current_lexeme):
-                type_of_lexeme = general_tokens._IDENTIFIER
-            else:
-                type_of_lexeme = general_tokens._ERROR
-
-            tokens.append((current_lexeme, type_of_lexeme))
+            tokens.append((current_lexeme, find_type_of_lexeme(current_lexeme)))
             char_list.clear()
 
         current_index += 1
 
     return tokens
+
+
+def find_type_of_lexeme(lexeme):
+    type_of_lexeme = int()
+
+    if is_keyword(lexeme):
+        type_of_lexeme = find_type(lexeme)
+    elif is_int(lexeme):
+        type_of_lexeme = general_tokens._NUM
+    elif is_real_num(lexeme):
+        type_of_lexeme = general_tokens._REAL
+    elif is_string(lexeme):
+        type_of_lexeme = general_tokens._STRING
+    elif is_char(lexeme):
+        type_of_lexeme = general_tokens._CHAR
+    elif is_identifier(lexeme):
+        type_of_lexeme = general_tokens._IDENTIFIER
+    else:
+        type_of_lexeme = general_tokens._ERROR
+
+    return type_of_lexeme
 
 
 def is_operator(lexeme):
