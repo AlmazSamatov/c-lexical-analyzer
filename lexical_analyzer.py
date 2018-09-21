@@ -4,9 +4,11 @@ import general_tokens
 import operators
 from util import to_str
 from util import find_type
+from util import delete_comments
 
 
 def scan(input_code):
+    input_code = delete_comments(input_code)
     current_index = 0
     char_list = []
 
@@ -62,9 +64,10 @@ def is_string(str):
     # begins and ends with ", do not have " inside
     pass
 
+
 def is_char(str):
     pass
-    #return len(str) == 3 and str[0] == "'" and str[2] == "'" and (str[1].isdigit() or str[1].is)
+    # return len(str) == 3 and str[0] == "'" and str[2] == "'" and (str[1].isdigit() or str[1].is)
 
 
 def is_delimiter(str):

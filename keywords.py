@@ -30,6 +30,7 @@ _VOID = 77  # void
 _VOLATILE = 78  # volatile
 _WHILE = 79  # while
 
+
 # Dictionary that correlates lexeme with token
 _dictionary = {
     'auto': _AUTO,
