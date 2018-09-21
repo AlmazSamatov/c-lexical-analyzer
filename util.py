@@ -45,6 +45,8 @@ def delete_multiline_comments(code):
 
 
 def delete_from_string_indexes(code, indexes):
+    if len(indexes) == 0:
+        return code
     new_code = []
     curr_index = 0
     for i, (start, end) in enumerate(indexes):
