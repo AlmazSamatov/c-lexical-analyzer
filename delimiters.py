@@ -10,6 +10,7 @@ _RCOM = 45  # */
 _COM = 46  # //
 _SQUOTE = 47  # '
 _DQUOTE = 48  # "
+_SEMI = 85  # ;
 
 # Dictionary that correlates lexeme with token
 _dictionary = {
@@ -24,5 +25,6 @@ _dictionary = {
     '*/': _RCOM,
     '//': _COM,
     "'": _SQUOTE,
-    '"': _DQUOTE
+    '"': _DQUOTE,
+    ';': _SEMI
 }
