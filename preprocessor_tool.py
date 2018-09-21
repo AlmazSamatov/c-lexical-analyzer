@@ -29,6 +29,33 @@ class PreprocessorTool:
             return '_EOF'
         return self.c_code[self.iterator]
 
+    def remove_first(self, string):
+        self.c_code = self.c_code.replace(string, '', 1)
+
+    def replace_all(self, replace_what, replace_to):
+        all_d_quotes = self.find_all('"')
+        all_replace_what = self.find_all(replace_what)
+        while not len(all_replace_what) == 0:
+            skip = False
+            for i in range(0, len(all_d_quotes), 2):
+                if all_replace_what[0] > all_d_quotes[i] and all_replace_what[0] < all_d_quotes[i+1]:
+                    skip = True
+                    all_replace_what.remove(all_replace_what[0])
+            if all_replace_what[0] - 1 > -1 and (self.c_code[all_replace_what[0]-1] != ' ' and
+                                                 self.c_code[all_replace_what[0]-1] != '\n'):
+                skip = True
+                all_replace_what.remove(all_replace_what[0])
+            elif all_replace_what[0] + len(replace_what) < len(self.c_code) and \
+                    (self.c_code[all_replace_what[0] + len(replace_what)] != ' ' and
+                     self.c_code[all_replace_what[0] + len(replace_what)] != '\n'):
+                skip = True
+                all_replace_what.remove(all_replace_what[0])
+            if not skip:
+                self.c_code = self.c_code[:all_replace_what[0]] + replace_to + \
+                              self.c_code[all_replace_what[0]+len(replace_what):]
+                all_d_quotes = self.find_all('"')
+                all_replace_what = self.find_all(replace_what)
+
     # Skips spaces
     def skip(self):
         while self.c_code[self.iterator + 1] == ' ':
