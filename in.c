@@ -1,7 +1,1 @@
-#define WOW 999
-#define AHA 323
-
-"WOW" WOW
-"WOW" WOW
-AHA
-WOWssx  sxxxWOW
+int a = 6&3<<8;
