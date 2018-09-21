@@ -1,9 +1,21 @@
+from delimiters import _dictionary as delimiters
+from keywords import _dictionary as keywords
+from operators import _dictionary as operators
+
+
 def to_str(list):
     return ''.join(list)
 
 
-def find_type(str):
-    pass
+def find_type(lexeme):
+    types = []
+    types.append(delimiters.get(lexeme))
+    types.append(keywords.get(lexeme))
+    types.append(operators.get(lexeme))
+    for type in types:
+        if type != None:
+            return type
+    return None
 
 
 def delete_comments(code):
