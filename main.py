@@ -1,5 +1,5 @@
-import preprocessor
+from lexical_analyzer import scan
 
 f = open("in.c", "r")
-c_code = f.read()
-preprocessor.start(c_code)
+lexical_analyzer = scan(f.read())
+lexical_analyzer.scan()

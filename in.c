@@ -1,4 +1,16 @@
-#define WOW 999
-#define WOW2 777
+// asdnasdjasfh kjhbahjbd
+// asdbfajs,dfbasjdbfj
+// asdjfnaksjdfnk,
 
-WOW
+23 * 234;
+
+sdafasdf //a asjdnflasdjhfkjlasdfhkj
+// asdklfjaskdjfkj
+asd
+/* asdasd aasdasdas
+asasd
+asdasdas
+sada
+sd
+asd
+*/
