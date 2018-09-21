@@ -34,4 +34,18 @@ def scan_for_define(c_code):
         return replace_what, replace_to
     return None, None
 
-        
+
+def replace_all(c_code, replace_what, replace_to):
+    preprocessor_tool = PreprocessorTool(c_code)
+    d_quote_open = False
+    current_char = preprocessor_tool.get_next_char()
+    if current_char != '_EOF':
+        if current_char == '"':
+            if d_quote_open:
+                d_quote_open = False
+            else:
+                d_quote_open = True
+        else:
+
+
+
