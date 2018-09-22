@@ -1,17 +1,26 @@
 from src.preprocessor_tool import PreprocessorTool
+from src.util import to_str
 
 
-#  Starting all preprocessing tools
 def start(c_code):
+    """
+    Starting preprocessing tools for input C code
+    :param c_code: C code that need to be preprocessed
+    :return: preprocessed C code
+    """
+    c_code = delete_comments(c_code)
     replacing = scan_for_define(c_code)
     for key, value in replacing.items():
         c_code = replace_all(c_code, key, value)
     return c_code
 
 
-#  Scanning all '#define ' and return dictionary with format:
-#  what_to_replace: on_what_to_replace
 def scan_for_define(c_code):
+    """
+    Scans for '#define' tokens and what string should be replaced in input C code
+    :param c_code: C code in which scan is taking place
+    :return: dictionary with following format: {what_should_be_replaced: on_what_should_be_replaced}
+    """
     replacing = {}
     preprocessor_tool = PreprocessorTool(c_code)
     define_indexes = preprocessor_tool.find_all("#define ")
@@ -43,8 +52,82 @@ def scan_for_define(c_code):
 
 
 def replace_all(c_code, replace_what, replace_to):
+    """
+    Replace all 'replace_what' entries with 'replace_to' (only where it is needed)
+    :param c_code: C code in which replace is taking place
+    :param replace_what: string that should be replaced
+    :param replace_to: string that should be placed instead of 'replace_what'
+    :return: C code (string)
+    """
     preprocessor_tool = PreprocessorTool(c_code)
     define_string = '#define ' + replace_what + ' ' + replace_to
     preprocessor_tool.remove_first(define_string)
     preprocessor_tool.replace_all(replace_what, replace_to)
     return preprocessor_tool.c_code
+
+
+def delete_comments(code):
+    """
+    Deletes all types of C comments in an input
+    :param code: C code in which comments should be deleted
+    :return: C code without comments
+    """
+    code = delete_oneline_comments(code)
+    return delete_multiline_comments(code)
+
+
+def delete_comments_universal(code, begin_str, end_str):
+    """
+    Deletes all substrings
+    :param code: input string
+    :param begin_str: beginning of the substring
+    :param end_str: ending of the substring
+    :return: string with deleted substrings
+    """
+    indexes = []
+    current_index = code.find(begin_str, 0)
+    while current_index != -1:
+        next_end_index = code.find(end_str, current_index)
+        if next_end_index == -1:
+            indexes.append((current_index, len(code) - 1))
+        else:
+            indexes.append((current_index, next_end_index + len(end_str) - 1))
+        current_index = code.find('//', next_end_index)
+    return delete_from_string_indexes(code, indexes)
+
+
+def delete_oneline_comments(code):
+    """
+    Deletes all C one line comments
+    :param code: input C code
+    :return: C code without one line comments
+    """
+    return delete_comments_universal(code, '//', '\n')
+
+
+def delete_multiline_comments(code):
+    """
+    Deletes all C multi line comments
+    :param code: input C code
+    :return: C code without multi line comments
+    """
+    return delete_comments_universal(code, '/*', '*/')
+
+
+def delete_from_string_indexes(code, indexes):
+    """
+    I'm not sure :(((((
+    :param code:
+    :param indexes:
+    :return:
+    """
+    if len(indexes) == 0:
+        return code
+    new_code = []
+    curr_index = 0
+    for i, (start, end) in enumerate(indexes):
+        new_code.append(code[curr_index:start])
+        curr_index = end + 1
+        if i == len(indexes) - 1:
+            new_code.append(code[curr_index:len(code)])
+    return to_str(new_code)
