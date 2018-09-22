@@ -16,11 +16,11 @@ Follow steps below to run the analyzer
 If you have [created python venv](https://docs.python.org/3/library/venv.html) and installed Pytest in it:
 1. [Activate venv](https://virtualenv.pypa.io/en/stable/userguide/) in shell
 2. Go to folder where the analyzer is located via shell
-3. Run ```python -m pytest test/```
+3. Run ```python -m pytest test/``` or ```python3 -m pytest test/``` (if you have Python2 installed)
 
 If you haven't installed python venv and using Pytest globally:
 1. Go to folder where the analyzer is located via shell
-2. Run ```python -m pytest test/```
+2. Run ```python -m pytest test/``` or ```python3 -m pytest test/``` (if you have Python2 installed)
 ## Supported tokens
 ### Delimiters
 Lexeme|Description|Program Representation|Integer Value
