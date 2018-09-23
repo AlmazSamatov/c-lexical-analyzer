@@ -122,6 +122,9 @@ sizeof|sizeof operator|_SIZEOF|28
 ?|Question mark|_QUEST|35
 :|Colon|_COLON|36
 ->|Selection operator|_SELECT|86
+++|Increment|_INC|87
+--|Decrement|_DEC|88
+P.S. Some tokens may not appear in output tokens stream because they do not contain valuable information for future proccessing
 ## Authors
 * [**Asapov Timur**](https://github.com/Myyyth) - 3rd year student of Innopolis University
 * [**Samatov Almaz**](https://github.com/AlmazSamatov) - 3rd year student of Innopolis University

@@ -72,7 +72,7 @@ def test_start():
                     } \n\
                 return flag;\n\
                 }'
-    valid_string = '\n// user-defined function to check prime number \n\
+    valid_string = '\n\
                 int checkPrimeNumber(int n) \n\
                 { \n\
                     int j, flag = 1; \n\

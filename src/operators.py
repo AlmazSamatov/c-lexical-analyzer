@@ -34,6 +34,8 @@ _COMMA = 34  # ,
 _QUEST = 35  # ?
 _COLON = 36  # :
 _SELECT = 86  # ->
+_INC = 87  # ++
+_DEC = 88  # --
 
 # Dictionary that correlates lexeme with token
 _dictionary = {
@@ -72,5 +74,7 @@ _dictionary = {
     ',': _COMMA,
     '?': _QUEST,
     ':': _COLON,
-    '->': _SELECT
+    '->': _SELECT,
+    '++': _INC,
+    '--': _DEC
 }

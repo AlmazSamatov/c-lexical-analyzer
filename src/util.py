@@ -110,7 +110,7 @@ def is_int(lexeme):
     :return: True if the lexeme is int, False otherwise
     """
     for i, char in enumerate(lexeme):
-        if not char.isdigit() or (char == '-' and i != 0):
+        if not char.isdigit() and not (char == '-' and i == 0):
             return False
     return True
 
