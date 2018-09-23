@@ -10,7 +10,7 @@ def test_1_find_type():
 
 
 def test_2_find_type():
-    assert find_type('-2sd;3') is None
+    assert find_type('-2sd;3') == -1
 
 
 def test_3_find_type():

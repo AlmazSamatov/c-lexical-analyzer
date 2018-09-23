@@ -1,4 +1,24 @@
 from src.util import to_str, find_type, is_delimiter, is_operator
+import src.general_tokens
+
+token_it = -1
+tokens = []
+
+
+def get_next_token(input_code):
+    """
+    Returns next token
+    :param input_code: input C code
+    :return: next token by iterator or _EOF if end of file
+    """
+    global token_it
+    if token_it == -1:
+        scan(input_code)
+    token_it += 1
+    if token_it >= len(tokens):
+        eof_token = ('_EOF', src.general_tokens._EOF)
+        return eof_token
+    return tokens[token_it]
 
 
 def scan(input_code):
@@ -7,8 +27,8 @@ def scan(input_code):
     :param input_code: C code that need to be scanned
     :return: Tuple with tokens of following format: ('token', integer_representation)
     """
+    global tokens
     tokens = []
-
     input_code = input_code.replace('\n', ' ')
     current_index = 0
     char_list = []
