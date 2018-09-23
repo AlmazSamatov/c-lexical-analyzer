@@ -137,6 +137,11 @@ def delete_from_string_indexes(code, indexes):
 
 
 def parse_include_files(input_code):
+    """
+    Parses '#include' entries
+    :param input_code: input C code
+    :return: C code with parsed '#include' statements
+    """
     while input_code.find('#include') != -1:
 
         include_index = input_code.find('#include')

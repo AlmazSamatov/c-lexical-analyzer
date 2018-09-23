@@ -108,10 +108,6 @@ def is_identifier(lexeme):
     return True
 
 
-def is_special_symbol(lexeme):
-    return special_symbols.get(lexeme) is not None
-
-
 def is_delimiter(lexeme):
     """
     Checks if current lexeme is delimiter
@@ -131,7 +127,7 @@ def is_int(lexeme):
     if is_equal(lexeme[len(lexeme) - 1].lower(), ['l', 'u']):
         lexeme = lexeme[:len(lexeme) - 1]
     for i, char in enumerate(lexeme):
-        if not char.isdigit() and (char == '-' and i != 0):
+        if not char.isdigit() and not (char == '-' and i == 0):
             return False
     return True
 
