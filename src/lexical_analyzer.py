@@ -1,10 +1,14 @@
-from util import to_str, find_type, delete_comments, is_delimiter, is_operator
+from src.util import to_str, find_type, is_delimiter, is_operator
 
 
 def scan(input_code):
+    """
+    Scans input C code for tokens and returns list of tuples with tokens
+    :param input_code: C code that need to be scanned
+    :return: Tuple with tokens of following format: ('token', integer_representation)
+    """
     tokens = []
 
-    input_code = delete_comments(input_code)
     input_code = input_code.replace('\n', ' ')
     current_index = 0
     char_list = []
@@ -33,7 +37,6 @@ def scan(input_code):
         elif current_index < len(input_code) and not is_delimiter(input_code[current_index]):
             char_list.append(input_code[current_index])
             current_index += 1
-
         else:
 
             if len(char_list) > 0:
@@ -61,6 +64,9 @@ def scan(input_code):
             char_list.clear()
 
             # put operator after lexeme
+            tokens.append((operator_lexeme, find_type(operator_lexeme)))
+
+        elif len(operator_lexeme) > 0:
             tokens.append((operator_lexeme, find_type(operator_lexeme)))
 
     return tokens

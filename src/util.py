@@ -1,7 +1,7 @@
-from delimiters import _dictionary as delimiters
-from keywords import _dictionary as keywords
-from operators import _dictionary as operators
-import general_tokens
+from src.delimiters import _dictionary as delimiters
+from src.keywords import _dictionary as keywords
+from src.operators import _dictionary as operators
+import src.general_tokens as general_tokens
 
 
 def to_str(list):
@@ -28,45 +28,6 @@ def find_type(lexeme):
         return general_tokens._IDENTIFIER
     else:
         return general_tokens._ERROR
-
-
-def delete_comments(code):
-    code = delete_oneline_comments(code)
-    return delete_multiline_comments(code)
-
-
-def delete_comments_universal(code, begin_str, end_str):
-    indexes = []
-    current_index = code.find(begin_str, 0)
-    while current_index != -1:
-        next_end_index = code.find(end_str, current_index)
-        if next_end_index == -1:
-            indexes.append((current_index, len(code) - 1))
-        else:
-            indexes.append((current_index, next_end_index + len(end_str) - 1))
-        current_index = code.find('//', next_end_index)
-    return delete_from_string_indexes(code, indexes)
-
-
-def delete_oneline_comments(code):
-    return delete_comments_universal(code, '//', '\n')
-
-
-def delete_multiline_comments(code):
-    return delete_comments_universal(code, '/*', '*/')
-
-
-def delete_from_string_indexes(code, indexes):
-    if len(indexes) == 0:
-        return code
-    new_code = []
-    curr_index = 0
-    for i, (start, end) in enumerate(indexes):
-        new_code.append(code[curr_index:start])
-        curr_index = end + 1
-        if i == len(indexes) - 1:
-            new_code.append(code[curr_index:len(code)])
-    return to_str(new_code)
 
 
 def is_operator(lexeme):
@@ -104,7 +65,7 @@ def is_delimiter(lexeme):
 
 def is_int(lexeme):
     for i, char in enumerate(lexeme):
-        if not char.isdigit() and (char == '-' and i != 0):
+        if not char.isdigit() or (char == '-' and i != 0):
             return False
     return True
 

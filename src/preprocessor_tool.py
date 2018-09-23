@@ -1,9 +1,11 @@
 import re
+from src.operators import _dictionary as op_dict
+from src.delimiters import _dictionary as del_dict
 
 
 # Tool that helps preprocessor to handle a c code
 class PreprocessorTool:
-    iterator = 0
+    iterator = -1
     c_code = ''
 
     # Constructor with c code as a parameter
@@ -20,7 +22,8 @@ class PreprocessorTool:
 
     # Set iterator of a preprocessor tool
     def set_iterator(self, iterator):
-        self.iterator = iterator
+        if type(iterator) is int:
+            self.iterator = iterator
 
     # Moving iterator and getting new char
     def get_next_char(self):
@@ -42,12 +45,16 @@ class PreprocessorTool:
                     skip = True
                     all_replace_what.remove(all_replace_what[0])
             if all_replace_what[0] - 1 > -1 and (self.c_code[all_replace_what[0]-1] != ' ' and
-                                                 self.c_code[all_replace_what[0]-1] != '\n'):
+                                                 self.c_code[all_replace_what[0]-1] != '\n' and
+                                                 not self.c_code[all_replace_what[0]-1] in op_dict and
+                                                 not self.c_code[all_replace_what[0]-1] in del_dict):
                 skip = True
                 all_replace_what.remove(all_replace_what[0])
             elif all_replace_what[0] + len(replace_what) < len(self.c_code) and \
                     (self.c_code[all_replace_what[0] + len(replace_what)] != ' ' and
-                     self.c_code[all_replace_what[0] + len(replace_what)] != '\n'):
+                     self.c_code[all_replace_what[0] + len(replace_what)] != '\n' and
+                     not self.c_code[all_replace_what[0] + len(replace_what)] in op_dict and
+                     not self.c_code[all_replace_what[0] + len(replace_what)] in del_dict):
                 skip = True
                 all_replace_what.remove(all_replace_what[0])
             if not skip:
