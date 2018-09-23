@@ -47,7 +47,7 @@ def scan(input_code):
                 continue
             quotes = [('"', _STRING), ("'", _CHAR)]
             for quote in quotes:
-                # we find string and chars here
+                # we find string or char literal here
                 if input_code[current_index] == quote[0]:
                     end_index_of_literal = input_code.find(quote[0], current_index + 1)
                     if end_index_of_literal != -1:
@@ -103,6 +103,9 @@ def scan(input_code):
             char_list.clear()
 
             # put operator after lexeme
+            tokens.append((operator_lexeme, find_type(operator_lexeme)))
+        elif len(operator_lexeme) > 0:
+            # if there are nothing in char_list then just put operator
             tokens.append((operator_lexeme, find_type(operator_lexeme)))
 
     return tokens

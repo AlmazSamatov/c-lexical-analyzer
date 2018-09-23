@@ -12,6 +12,7 @@ def start(c_code):
     replacing = scan_for_define(c_code)
     for key, value in replacing.items():
         c_code = replace_all(c_code, key, value)
+    c_code = parse_include_files(c_code)
     return c_code
 
 
@@ -25,7 +26,7 @@ def scan_for_define(c_code):
     preprocessor_tool = PreprocessorTool(c_code)
     define_indexes = preprocessor_tool.find_all("#define ")
     for define_index in define_indexes:
-        preprocessor_tool.set_iterator(define_index+7)
+        preprocessor_tool.set_iterator(define_index + 7)
         preprocessor_tool.skip()
         replace_what = ''
         current_char = preprocessor_tool.get_next_char()
@@ -131,3 +132,34 @@ def delete_from_string_indexes(code, indexes):
         if i == len(indexes) - 1:
             new_code.append(code[curr_index:len(code)])
     return to_str(new_code)
+
+
+def parse_include_files(input_code):
+    while input_code.find('#include') != -1:
+
+        include_index = input_code.find('#include')
+        begin_index = include_index + len('#include')
+
+        if include_index == -1:
+            return input_code
+
+        while begin_index < len(input_code) and input_code[begin_index] == ' ':
+            begin_index += 1
+
+        if input_code[begin_index] != '"' and input_code[begin_index] != "<":
+            raise Exception('After #include statement came {} symbol instead of dual quote symbol (") or "<" symbol.')
+        elif input_code[begin_index] == '"':
+            # search in directory
+            end_index = input_code.find('"', begin_index + 1)
+            file_name = input_code[begin_index + 1:end_index]
+            with open(file_name, "r") as file:
+                file.seek(0)
+                code = file.read()
+                input_code = input_code[:include_index] + code + parse_include_files(input_code[end_index + 1:])
+
+        elif input_code[begin_index] == '<':
+            # search in /libs, because this is system library
+            end_index = input_code.find('>', begin_index + 1)
+            input_code = input_code[:end_index + 1] + parse_include_files(input_code[end_index + 1:])
+
+    return input_code

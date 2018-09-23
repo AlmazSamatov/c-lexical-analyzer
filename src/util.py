@@ -2,8 +2,6 @@ from src.delimiters import _dictionary as delimiters
 from src.keywords import _dictionary as keywords
 from src.operators import _dictionary as operators
 import src.general_tokens as general_tokens
-from src.special_symbols import _dictionary as special_symbols
-import general_tokens
 
 
 def to_str(list):
@@ -25,7 +23,6 @@ def find_type(lexeme):
     types.append(delimiters.get(lexeme))
     types.append(keywords.get(lexeme))
     types.append(operators.get(lexeme))
-    types.append(special_symbols.get(lexeme))
     for type in types:
         if type is not None:
             return type
@@ -85,7 +82,8 @@ def is_operator(lexeme):
     :return: True if the lexeme is operator, False otherwise
     """
     # + - = / *
-    return operators.get(lexeme) != None
+    return operators.get(lexeme) is not None
+
 
 def is_keyword(lexeme):
     """
@@ -139,6 +137,11 @@ def is_int(lexeme):
 
 
 def is_real_num(lexeme):
+    """
+        Checks if current lexeme is real number
+        :param lexeme: input lexeme
+        :return: True if the lexeme is real number, False otherwise
+    """
     if is_equal(lexeme[len(lexeme) - 1].lower(), ['l', 'f']):
         lexeme = lexeme[:len(lexeme) - 1]
     try:
@@ -153,17 +156,3 @@ def is_equal(char, list):
         if char == i:
             return True
     return False
-    """
-    Checks if current lexeme is real number
-    :param lexeme: input lexeme
-    :return: True if the lexeme is real number, False otherwise
-    """
-    is_decimal = False
-    for i, char in enumerate(lexeme):
-        if not char.isdigit() and (char == '-' and i != 0):
-            return False
-        if char == '.' and not is_decimal:
-            is_decimal = True
-        elif char == '.' and is_decimal:
-            return False
-    return is_decimal

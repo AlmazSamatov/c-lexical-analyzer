@@ -31,3 +31,7 @@ def test_1_is_int():
 
 def test_2_is_int():
     assert is_int('-2323') is True
+
+
+def test_3_is_int():
+    assert is_int('-2323L') is True
