@@ -5,10 +5,20 @@ import src.general_tokens as general_tokens
 
 
 def to_str(list):
+    """
+    Converts list to string
+    :param list: list that need to be converted
+    :return: list converted into string
+    """
     return ''.join(list)
 
 
 def find_type(lexeme):
+    """
+    Determines type of the lexeme
+    :param lexeme: input lexeme
+    :return: type of the lexeme
+    """
     types = []
     types.append(delimiters.get(lexeme))
     types.append(keywords.get(lexeme))
@@ -31,25 +41,50 @@ def find_type(lexeme):
 
 
 def is_operator(lexeme):
+    """
+    Checks if current lexeme is operator
+    :param lexeme: input lexeme
+    :return: True if the lexeme is operator, False otherwise
+    """
     # + - = / *
     return operators.get(lexeme) != None
 
 
 def is_string(lexeme):
+    """
+    Checks if current lexeme is string
+    :param lexeme: input lexeme
+    :return: True if the lexeme is string, False otherwise
+    """
     # begins with " and ends with "
     return lexeme[0] == '"' and lexeme[len(lexeme) - 1] == '"'
 
 
 def is_char(lexeme):
+    """
+    Checks if current lexeme is char
+    :param lexeme: input lexeme
+    :return: True if the lexeme is char, False otherwise
+    """
     # begins with ' and ends with ' and length is 3
     return len(lexeme) == 3 and lexeme[0] == "'" and lexeme[2] == "'"
 
 
 def is_keyword(lexeme):
+    """
+    Checks if current lexeme is keyword
+    :param lexeme: input lexeme
+    :return: True if the lexeme is keyword, False otherwise
+    """
     return keywords.get(lexeme) != None
 
 
 def is_identifier(lexeme):
+    """
+    Checks if current lexeme is identifier
+    :param lexeme: input lexeme
+    :return: True if the lexeme is identifier, False otherwise
+    """
     if lexeme[0] != '_' and not lexeme[0].isalpha():
         return False
     for char in lexeme:
@@ -59,11 +94,21 @@ def is_identifier(lexeme):
 
 
 def is_delimiter(lexeme):
+    """
+    Checks if current lexeme is delimiter
+    :param lexeme: input lexeme
+    :return: True if the lexeme is delimiter, False otherwise
+    """
     # , ; { } etc.
     return delimiters.get(lexeme) != None
 
 
 def is_int(lexeme):
+    """
+    Checks if current lexeme is int
+    :param lexeme: input lexeme
+    :return: True if the lexeme is int, False otherwise
+    """
     for i, char in enumerate(lexeme):
         if not char.isdigit() or (char == '-' and i != 0):
             return False
@@ -71,6 +116,11 @@ def is_int(lexeme):
 
 
 def is_real_num(lexeme):
+    """
+    Checks if current lexeme is real number
+    :param lexeme: input lexeme
+    :return: True if the lexeme is real number, False otherwise
+    """
     is_decimal = False
     for i, char in enumerate(lexeme):
         if not char.isdigit() and (char == '-' and i != 0):
