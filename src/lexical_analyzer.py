@@ -1,3 +1,5 @@
+from src.util import to_str, find_type, delete_comments, is_delimiter, is_operator
+from src.general_tokens import _STRING, _CHAR
 from src.util import to_str, find_type, is_delimiter, is_operator
 import src.general_tokens
 
@@ -30,11 +32,28 @@ def scan(input_code):
     global tokens
     tokens = []
     input_code = input_code.replace('\n', ' ')
+
+    input_code = delete_comments(input_code)
     current_index = 0
     char_list = []
 
     while len(char_list) > 0 or current_index < len(input_code):
         operator_lexeme = ''
+
+        if current_index < len(input_code):
+            # if we can get access to current index element of input code
+            if input_code[current_index] == '\n':
+                current_index += 1
+                continue
+            quotes = [('"', _STRING), ("'", _CHAR)]
+            for quote in quotes:
+                # we find string or char literal here
+                if input_code[current_index] == quote[0]:
+                    end_index_of_literal = input_code.find(quote[0], current_index + 1)
+                    if end_index_of_literal != -1:
+                        tokens.append((input_code[current_index:end_index_of_literal + 1], quote[1]))
+                        current_index = end_index_of_literal + 1
+                        continue
 
         if current_index + 2 < len(input_code) and is_operator(input_code[current_index: current_index + 3]):
             # if we have operators as <<= etc.
@@ -85,8 +104,8 @@ def scan(input_code):
 
             # put operator after lexeme
             tokens.append((operator_lexeme, find_type(operator_lexeme)))
-
         elif len(operator_lexeme) > 0:
+            # if there are nothing in char_list then just put operator
             tokens.append((operator_lexeme, find_type(operator_lexeme)))
 
     return tokens
