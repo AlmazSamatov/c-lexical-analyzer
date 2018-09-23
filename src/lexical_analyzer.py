@@ -1,4 +1,4 @@
-from src.util import to_str, find_type, delete_comments, is_delimiter, is_operator
+from src.util import to_str, find_type, is_delimiter, is_operator
 from src.general_tokens import _STRING, _CHAR
 from src.util import to_str, find_type, is_delimiter, is_operator
 import src.general_tokens
@@ -31,9 +31,6 @@ def scan(input_code):
     """
     global tokens
     tokens = []
-    input_code = input_code.replace('\n', ' ')
-
-    input_code = delete_comments(input_code)
     current_index = 0
     char_list = []
 
