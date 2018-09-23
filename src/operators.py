@@ -35,7 +35,7 @@ _QUEST = 35  # ?
 _COLON = 36  # :
 _SELECT = 86  # ->
 _INC = 87  # ++
-_DEC = 88  # 89
+_DEC = 88  # --
 
 # Dictionary that correlates lexeme with token
 _dictionary = {
