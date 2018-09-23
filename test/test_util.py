@@ -22,7 +22,7 @@ def test_1_is_real_num():
 
 
 def test_2_is_real_num():
-    assert is_real_num('-398418223') is False
+    assert is_real_num('-398418223') is True
 
 
 def test_1_is_int():
