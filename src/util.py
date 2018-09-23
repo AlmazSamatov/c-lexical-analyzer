@@ -1,15 +1,26 @@
-from delimiters import _dictionary as delimiters
-from keywords import _dictionary as keywords
-from operators import _dictionary as operators
-from special_symbols import _dictionary as special_symbols
+from src.delimiters import _dictionary as delimiters
+from src.keywords import _dictionary as keywords
+from src.operators import _dictionary as operators
+import src.general_tokens as general_tokens
+from src.special_symbols import _dictionary as special_symbols
 import general_tokens
 
 
 def to_str(list):
+    """
+    Converts list to string
+    :param list: list that need to be converted
+    :return: list converted into string
+    """
     return ''.join(list)
 
 
 def find_type(lexeme):
+    """
+    Determines type of the lexeme
+    :param lexeme: input lexeme
+    :return: type of the lexeme
+    """
     types = []
     types.append(delimiters.get(lexeme))
     types.append(keywords.get(lexeme))
@@ -22,10 +33,6 @@ def find_type(lexeme):
         return general_tokens._NUM
     elif is_real_num(lexeme):
         return general_tokens._REAL
-    elif is_string(lexeme):
-        return general_tokens._STRING
-    elif is_char(lexeme):
-        return general_tokens._CHAR
     elif is_identifier(lexeme):
         return general_tokens._IDENTIFIER
     else:
@@ -72,28 +79,29 @@ def delete_from_string_indexes(code, indexes):
 
 
 def is_operator(lexeme):
+    """
+    Checks if current lexeme is operator
+    :param lexeme: input lexeme
+    :return: True if the lexeme is operator, False otherwise
+    """
     # + - = / *
     return operators.get(lexeme) != None
 
-
-def is_string(lexeme):
-    # do not contain embedded new lines, only \n
-    for char in lexeme:
-        if char == '\n':
-            return False
-    return True
-
-
-def is_char(lexeme):
-    # begins with ' and ends with ' and length is 3
-    return len(lexeme) == 3 and lexeme[0] == "'" and lexeme[2] == "'"
-
-
 def is_keyword(lexeme):
+    """
+    Checks if current lexeme is keyword
+    :param lexeme: input lexeme
+    :return: True if the lexeme is keyword, False otherwise
+    """
     return keywords.get(lexeme) is not None
 
 
 def is_identifier(lexeme):
+    """
+    Checks if current lexeme is identifier
+    :param lexeme: input lexeme
+    :return: True if the lexeme is identifier, False otherwise
+    """
     if lexeme[0] != '_' and not lexeme[0].isalpha():
         return False
     for char in lexeme:
@@ -107,11 +115,21 @@ def is_special_symbol(lexeme):
 
 
 def is_delimiter(lexeme):
+    """
+    Checks if current lexeme is delimiter
+    :param lexeme: input lexeme
+    :return: True if the lexeme is delimiter, False otherwise
+    """
     # , ; { } etc.
     return delimiters.get(lexeme) is not None
 
 
 def is_int(lexeme):
+    """
+    Checks if current lexeme is int
+    :param lexeme: input lexeme
+    :return: True if the lexeme is int, False otherwise
+    """
     if is_equal(lexeme[len(lexeme) - 1].lower(), ['l', 'u']):
         lexeme = lexeme[:len(lexeme) - 1]
     for i, char in enumerate(lexeme):
@@ -135,3 +153,17 @@ def is_equal(char, list):
         if char == i:
             return True
     return False
+    """
+    Checks if current lexeme is real number
+    :param lexeme: input lexeme
+    :return: True if the lexeme is real number, False otherwise
+    """
+    is_decimal = False
+    for i, char in enumerate(lexeme):
+        if not char.isdigit() and (char == '-' and i != 0):
+            return False
+        if char == '.' and not is_decimal:
+            is_decimal = True
+        elif char == '.' and is_decimal:
+            return False
+    return is_decimal

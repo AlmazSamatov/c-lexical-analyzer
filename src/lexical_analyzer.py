@@ -1,9 +1,37 @@
-from util import to_str, find_type, delete_comments, is_delimiter, is_operator
-from general_tokens import _STRING, _CHAR
+from src.util import to_str, find_type, delete_comments, is_delimiter, is_operator
+from src.general_tokens import _STRING, _CHAR
+from src.util import to_str, find_type, is_delimiter, is_operator
+import src.general_tokens
+
+token_it = -1
+tokens = []
+
+
+def get_next_token(input_code):
+    """
+    Returns next token
+    :param input_code: input C code
+    :return: next token by iterator or _EOF if end of file
+    """
+    global token_it
+    if token_it == -1:
+        scan(input_code)
+    token_it += 1
+    if token_it >= len(tokens):
+        eof_token = ('_EOF', src.general_tokens._EOF)
+        return eof_token
+    return tokens[token_it]
 
 
 def scan(input_code):
+    """
+    Scans input C code for tokens and returns list of tuples with tokens
+    :param input_code: C code that need to be scanned
+    :return: Tuple with tokens of following format: ('token', integer_representation)
+    """
+    global tokens
     tokens = []
+    input_code = input_code.replace('\n', ' ')
 
     input_code = delete_comments(input_code)
     current_index = 0
@@ -48,7 +76,6 @@ def scan(input_code):
         elif current_index < len(input_code) and not is_delimiter(input_code[current_index]):
             char_list.append(input_code[current_index])
             current_index += 1
-
         else:
 
             if len(char_list) > 0:
