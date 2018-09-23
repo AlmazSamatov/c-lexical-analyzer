@@ -116,10 +116,10 @@ def delete_multiline_comments(code):
 
 def delete_from_string_indexes(code, indexes):
     """
-    I'm not sure :(((((
-    :param code:
-    :param indexes:
-    :return:
+    Removes everything in code between values in 'indexes'
+    :param code: input code
+    :param indexes: indices for removing
+    :return: code without substrings defined by 'indexes'
     """
     if len(indexes) == 0:
         return code

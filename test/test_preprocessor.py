@@ -111,5 +111,6 @@ def test_delete_multiline_comments():
 
 
 def test_delete_from_string_indexes():
-    #  todo: idk what the purpose of the function is, so test will be written l8r
+    string = 'Hello*delete this*!'
+    assert delete_from_string_indexes(string, [(5, 17)]) == 'Hello!'
     pass
