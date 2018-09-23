@@ -1,6 +1,7 @@
 from delimiters import _dictionary as delimiters
 from keywords import _dictionary as keywords
 from operators import _dictionary as operators
+from special_symbols import _dictionary as special_symbols
 import general_tokens
 
 
@@ -13,8 +14,9 @@ def find_type(lexeme):
     types.append(delimiters.get(lexeme))
     types.append(keywords.get(lexeme))
     types.append(operators.get(lexeme))
+    types.append(special_symbols.get(lexeme))
     for type in types:
-        if type != None:
+        if type is not None:
             return type
     if is_int(lexeme):
         return general_tokens._NUM
@@ -75,8 +77,11 @@ def is_operator(lexeme):
 
 
 def is_string(lexeme):
-    # begins with " and ends with "
-    return lexeme[0] == '"' and lexeme[len(lexeme) - 1] == '"'
+    # do not contain embedded new lines, only \n
+    for char in lexeme:
+        if char == '\n':
+            return False
+    return True
 
 
 def is_char(lexeme):
@@ -85,7 +90,7 @@ def is_char(lexeme):
 
 
 def is_keyword(lexeme):
-    return keywords.get(lexeme) != None
+    return keywords.get(lexeme) is not None
 
 
 def is_identifier(lexeme):
@@ -97,12 +102,18 @@ def is_identifier(lexeme):
     return True
 
 
+def is_special_symbol(lexeme):
+    return special_symbols.get(lexeme) is not None
+
+
 def is_delimiter(lexeme):
     # , ; { } etc.
-    return delimiters.get(lexeme) != None
+    return delimiters.get(lexeme) is not None
 
 
 def is_int(lexeme):
+    if is_equal(lexeme[len(lexeme) - 1].lower(), ['l', 'u']):
+        lexeme = lexeme[:len(lexeme) - 1]
     for i, char in enumerate(lexeme):
         if not char.isdigit() and (char == '-' and i != 0):
             return False
@@ -110,12 +121,17 @@ def is_int(lexeme):
 
 
 def is_real_num(lexeme):
-    is_decimal = False
-    for i, char in enumerate(lexeme):
-        if not char.isdigit() and (char == '-' and i != 0):
-            return False
-        if char == '.' and not is_decimal:
-            is_decimal = True
-        elif char == '.' and is_decimal:
-            return False
-    return is_decimal
+    if is_equal(lexeme[len(lexeme) - 1].lower(), ['l', 'f']):
+        lexeme = lexeme[:len(lexeme) - 1]
+    try:
+        f = float(lexeme)
+        return True
+    except:
+        return False
+
+
+def is_equal(char, list):
+    for i in list:
+        if char == i:
+            return True
+    return False
