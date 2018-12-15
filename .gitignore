@@ -47,6 +47,9 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
+#idea
+.idea/
+
 # Translations
 *.mo
 *.pot
@@ -62,6 +65,9 @@ instance/
 
 # Scrapy stuff:
 .scrapy
+
+# IDEA
+.idea/
 
 # Sphinx documentation
 docs/_build/
@@ -81,18 +87,13 @@ celerybeat-schedule
 # SageMath parsed files
 *.sage.py
 
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
 # Spyder project settings
 .spyderproject
 .spyproject
+
+# virtualenv
+venv/
+ENV/
 
 # Rope project settings
 .ropeproject
